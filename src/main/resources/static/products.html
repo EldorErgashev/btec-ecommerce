@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulotlar - BTEC E-Commerce</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🛒 BTEC Commerce</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Bosh sahifa</a></li>
+                <li><a href="products.html" class="active">Mahsulotlar</a></li>
+                <li><a href="index.html#contact">Aloqa</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="products-container">
+        <aside class="filter-sidebar">
+            <h3>Kategoriyalar</h3>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">Hammasini Ko'rsat</button>
+                <button class="filter-btn" data-category="simlar">Simlar</button>
+                <button class="filter-btn" data-category="quvvatlash">Quvvatlash Bloklari</button>
+                <button class="filter-btn" data-category="naushniklar">Naushniklar</button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Mahsulot izlash...">
+                <button id="searchBtn" class="btn btn-small">Izlash</button>
+            </div>
+        </aside>
+
+        <main class="products-main">
+            <h1>Mahsulotlar Katalogi</h1>
+            
+            <div id="loadingSpinner" class="loading" style="display: none;">
+                Mahsulotlar yuklanimoqda...
+            </div>
+            
+            <div id="productsGrid" class="products-grid">
+                <!-- Mahsulotlar shu yerga dinamik joylashadi -->
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mahsulotlar</h4>
+                <ul>
+                    <li><a href="products.html?category=simlar">Simlar</a></li>
+                    <li><a href="products.html?category=quvvatlash">Quvvatlash Bloklari</a></li>
+                    <li><a href="products.html?category=naushniklar">Naushniklar</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Biz Haqimizda</h4>
+                <ul>
+                    <li><a href="#">Kompaniya Haqida</a></li>
+                    <li><a href="#">Shartlar va Shartlar</a></li>
+                    <li><a href="#">Maxfiylik Siyosati</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ijtimoiy Tarmoqlar</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Telegram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BTEC E-Commerce. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        let allProducts = [];
+        
+        async function loadProducts() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/products');
+                allProducts = await response.json();
+                displayProducts(allProducts);
+            } catch (error) {
+                console.error('Xato:', error);
+                document.getElementById('productsGrid').innerHTML = 
+                    '<p style="color: red;">Mahsulotlarni yuklashda xato yuz berdi</p>';
+            } finally {
+                spinner.style.display = 'none';
+            }
+        }
+        
+        function displayProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            
+            if (products.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Mahsulot topilmadi</p>';
+                return;
+            }
+            
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/250?text=' + encodeURIComponent(product.name)}" 
+                             alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p class="category">${product.category || 'Noma\'lum'}</p>
+                        <p class="description">${product.description || 'Tavsif yo\'q'}</p>
+                        <div class="product-footer">
+                            <span class="price">${product.price.toLocaleString('en-US')} so'm</span>
+                            <span class="stock ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+                                ${product.stock > 0 ? '📦 Mavjud' : '❌ Tugagan'}
+                            </span>
+                        </div>
+                        <button class="btn btn-small" onclick="addToCart(${product.id}, '${product.name}')">
+                            🛒 Savatchaga Qo'sh
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function addToCart(id, name) {
+            alert(`✅ "${name}" savatchaga qo'shildi!`);
+        }
+        
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                const filtered = category === 'all' 
+                    ? allProducts 
+                    : allProducts.filter(p => p.category === category);
+                displayProducts(filtered);
+            });
+        });
+        
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const query = document.getElementById('searchInput').value;
+            const filtered = allProducts.filter(p => 
+                p.name.toLowerCase().includes(query.toLowerCase()) ||
+                p.description.toLowerCase().includes(query.toLowerCase())
+            );
+            displayProducts(filtered);
+        });
+        
+        loadProducts();
+    </script>
+</body>
+</html>

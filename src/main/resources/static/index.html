@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTEC E-Commerce - Bosh Sahifa</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🛒 BTEC Commerce</div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Bosh sahifa</a></li>
+                <li><a href="products.html">Mahsulotlar</a></li>
+                <li><a href="#contact">Aloqa</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Xush kelibsiz BTEC E-Commerce Platformasiga</h1>
+            <p>Sifatli mahsulotlar, qulay narxlar, tez yetkazib berish</p>
+            <a href="products.html" class="btn btn-primary">Mahsulotlarni Ko'rish</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>Bizning Xizmatlar</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Tez Yetkazib Berish</h3>
+                <p>Barcha buyurtmalar 24-48 soat ichida yetkazib beriladi</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💳</div>
+                <h3>Xavfsiz To'lov</h3>
+                <p>Barcha to'lovlar 256-bit shifrlash bilan himoyalangan</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Oson Qaytarish</h3>
+                <p>30 kun ichida qaytarish va almashtirish imkoniyati</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>24/7 Qo'llab-Quvvatlash</h3>
+                <p>Har doim sizning savol-jurayshingilizga javob berishga tayyorimiz</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Biz Bilan Aloqa Qiling</h2>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Ismingiz:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Xabar:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Xabarni Yuborish</button>
+        </form>
+        <div id="contactResponse" class="contact-response"></div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mahsulotlar</h4>
+                <ul>
+                    <li><a href="products.html?category=simlar">Simlar</a></li>
+                    <li><a href="products.html?category=quvvatlash">Quvvatlash Bloklari</a></li>
+                    <li><a href="products.html?category=naushniklar">Naushniklar</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Biz Haqimizda</h4>
+                <ul>
+                    <li><a href="#">Kompaniya Haqida</a></li>
+                    <li><a href="#">Shartlar va Shartlar</a></li>
+                    <li><a href="#">Maxfiylik Siyosati</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Ijtimoiy Tarmoqlar</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Telegram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BTEC E-Commerce. Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            console.log('Xabar yuborildi:', { name, email, message });
+            
+            document.getElementById('contactResponse').innerHTML = 
+                '<p style="color: green; margin-top: 20px;">✅ Xabar muvaffaqiyatli yuborildi! Tez orada biz siz bilan bog\'lanamiz.</p>';
+            
+            this.reset();
+            setTimeout(() => {
+                document.getElementById('contactResponse').innerHTML = '';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
