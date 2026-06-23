@@ -1,4 +1,4 @@
-package com.example.ecommerce.config; // O'zingizning paket nomingizga moslang
+package com.example.ecommerce.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -9,10 +9,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // Asosiy / sahifa kelganda static/index.html faylini ochadi
+        // Asosiy root (/) manzil so'ralganda static/index.html sahifasini ochadi
         registry.addViewController("/").setViewName("forward:/index.html");
 
-        // /products kelganda static/products.html faylini ochadi
+        // /products manzili so'ralganda static/products.html sahifasini ochadi
         registry.addViewController("/products").setViewName("forward:/products.html");
     }
 }
